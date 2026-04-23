@@ -1,3 +1,7 @@
+/*
+Este es un archivo de ejemplo para basar el desarrollo
+*/
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
