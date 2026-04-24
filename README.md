@@ -114,6 +114,65 @@ mvn test -Dtest=SearchTest
 
 ---
 
+### ArticlePageTest (Test Case 3 - Página de Artículo)
+
+Pruebas para verificar la funcionalidad de la página de detalles de un artículo.
+
+```bash
+mvn test -Dtest=ArticlePageTest
+```
+
+**Tests incluidos:**
+- `testArticleNavigation` - Verifica que al hacer clic en una noticia se redirija a la página del artículo correspondiente.
+- `testArticlePageElements` - Verifica que la página del artículo contenga el título, el contenido y la fecha de publicación.
+
+**Funcionalidades probadas:**
+- Navegación a página de artículo desde la lista de noticias
+- Verificación de título del artículo
+- Verificación de contenido del artículo
+- Verificación de fecha de publicación
+
+**Selectores utilizados:**
+- Artículos: `.ee-post__media__content`
+- Título del artículo: `.ee-post__title__heading`
+- Encabezado de artículo: `.elementor-heading-title.elementor-size-default`
+- Contenedor de artículo: `.elementor-widget-container`
+- Fecha de publicación: XPath `//h2[@class='elementor-heading-title elementor-size-default'][contains(text(), ',') and contains(text(), '202')]`
+
+**URL probada:** `https://es.rollingstone.com/`
+
+---
+
+### SectionsTest (Test Case 4 - Acceso a Secciones)
+
+Pruebas para verificar el acceso a las secciones principales del portal.
+
+```bash
+mvn test -Dtest=SectionsTest
+```
+
+**Tests incluidos:**
+- `testSectionNavigation` - Verifica que se pueda acceder correctamente a las secciones del portal.
+- `testSectionArticlesList` - Verifica que al hacer clic en una sección se muestre la lista de artículos de esa sección.
+
+**Funcionalidades probadas:**
+- Navegación a secciones del portal (Política, Economía, Tecnología, etc.)
+- Verificación de cambio de URL después de acceder a una sección
+- Verificación de página de categoría
+- Verificación de lista de artículos en la sección
+- Verificación de títulos de artículos en la sección
+
+**Selectores utilizados:**
+- Enlaces de secciones: `li[contains(@class, 'menu-item-object-category')] a[@class='elementor-item']` (XPath)
+- Widget de posts: `div.elementor-widget-posts-extra`
+- Artículos en sección: `div.elementor-widget-posts-extra article`
+- Títulos de artículos: `h2`, `h3`, `a[contains(@class, 'title')]`, `h1`
+- Body (verificación de página de categoría): `body` (atributo class)
+
+**URL probada:** `https://es.rollingstone.com/`
+
+---
+
 ## Estructura del Proyecto
 
 ```
@@ -123,9 +182,10 @@ TestSelenium/
 ├── src/
 │   └── test/
 │       └── java/
-│           ├── LoginTest.java        # Tests de login (original)
 │           ├── HomePageTest.java     # Tests de página principal (Test Case 1)
-│           └── SearchTest.java       # Tests de búsqueda (Test Case 2)
+│           ├── SearchTest.java       # Tests de búsqueda (Test Case 2)
+│           ├── ArticlePageTest.java  # Tests de página de artículo (Test Case 3)
+│           └── SectionsTest.java     # Tests de acceso a secciones (Test Case 4)
 └── target/                           # Archivos compilados y reportes
     └── surefire-reports/             # Reportes de ejecución
 ```
@@ -159,6 +219,42 @@ Los tests siguen una convención de naming para facilitar el seguimiento:
   - T-2.2.3 = Verificación de mensaje
   - T-2.2.4 = Mensaje de no resultados mostrado
 
+- **T-3.x.x** = Test Case 3 (Página de Artículo)
+  - T-3.1.1 = Verificación de existencia de artículos
+  - T-3.1.2 = Obtención de URL de página principal
+  - T-3.1.3 = Obtención de título del artículo
+  - T-3.1.4 = Obtención de URL de página de artículo
+  - T-3.1.5 = Verificación de cambio de URL
+  - T-3.2.1 = Verificación de existencia de título
+  - T-3.2.2 = Verificación de contenido no vacío del título
+  - T-3.2.3 = Obtención del texto del título
+  - T-3.2.4 = Verificación de existencia de contenido
+  - T-3.2.5 = Verificación de contenido visible
+  - T-3.2.6 = Verificación de existencia de fecha
+  - T-3.2.7 = Verificación de contenido no vacío de fecha
+  - T-3.2.8 = Obtención del texto de la fecha
+
+- **T-4.x.x** = Test Case 4 (Acceso a Secciones)
+  - T-4.1.1 = Verificación de existencia de enlaces de sección
+  - T-4.1.2 = Conteo de enlaces de sección
+  - T-4.1.3 = Verificación de validez del enlace de sección
+  - T-4.1.4 = Obtención del nombre de la sección
+  - T-4.1.5 = Verificación de cambio de URL
+  - T-4.1.6 = Confirmación de navegación a sección
+  - T-4.2.1 = Verificación de existencia de enlaces de sección
+  - T-4.2.2 = Verificación de validez del enlace de sección
+  - T-4.2.3 = Obtención del nombre de la sección
+  - T-4.2.4 = Confirmación de navegación
+  - T-4.2.5 = Verificación de página de categoría
+  - T-4.2.6 = Confirmación en página de categoría
+  - T-4.2.7 = Verificación de existencia de widget de posts
+  - T-4.2.8 = Confirmación de widget de posts
+  - T-4.2.9 = Verificación de existencia de artículos
+  - T-4.2.10 = Conteo de artículos
+  - T-4.2.11 = Verificación de existencia de título de artículo
+  - T-4.2.12 = Obtención del texto del título
+  - T-4.2.13 = Verificación de contenido no vacío del título
+
 ## Reportes de Pruebas
 
 Después de ejecutar las pruebas, los reportes se generan en:
@@ -172,6 +268,10 @@ Archivos de reporte por clase:
 - `TEST-HomePageTest.xml` - Reporte en XML
 - `SearchTest.txt` - Reporte en texto
 - `TEST-SearchTest.xml` - Reporte en XML
+- `ArticlePageTest.txt` - Reporte en texto
+- `TEST-ArticlePageTest.xml` - Reporte en XML
+- `SectionsTest.txt` - Reporte en texto
+- `TEST-SectionsTest.xml` - Reporte en XML
 
 ## Notas Importantes
 
@@ -201,10 +301,12 @@ Archivos de reporte por clase:
 - Es comportamiento normal, los tests cierran el navegador automáticamente
 - Revisa los logs en la consola para ver qué sucedió
 
-## Próximos Test Cases (Pendientes)
+## Test Cases Implementados
 
-- **Test Case 3**: Pruebas de Página de Artículo
-- **Test Case 4**: Pruebas de Acceso a Secciones Principales
+- **Test Case 1**: Pruebas de Página Principal ✓
+- **Test Case 2**: Pruebas de Búsqueda de Noticias ✓
+- **Test Case 3**: Pruebas de Página de Artículo ✓
+- **Test Case 4**: Pruebas de Acceso a Secciones Principales ✓
 
 ## Más Información
 
