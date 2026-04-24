@@ -80,7 +80,7 @@ public class HomePageTest {
         // Inspecciona el sitio: si es <input type="search">, usa By.cssSelector("input[type='search']")
         // O si es un div con clase, ajusta. Por ahora, usar un selector común.
         try {
-            WebElement searchBar = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='search'], .search-form input")));
+            WebElement searchBar = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("elementor-search-form-6ef7d4d5")));
             Assert.assertTrue("T-1.2.3. Search bar should be displayed", searchBar.isDisplayed());
             System.out.println("T-1.2.3. Search bar is displayed");
         } catch (Exception e) {
