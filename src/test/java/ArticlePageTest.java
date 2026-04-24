@@ -50,7 +50,7 @@ public class ArticlePageTest {
     public void testArticleNavigation() {
         try {
             // Encontrar y dar click en el primer artículo
-            java.util.List<WebElement> articles = driver.findElements(By.cssSelector("article, .post, .entry, a[href*='/articulo'], a[href*='/news']"));
+            java.util.List<WebElement> articles = driver.findElements(By.cssSelector(".ee-post__media__content"));
             Assert.assertTrue("T-3.1.1. Should have at least one article to click", articles.size() > 0);
             
             String homeURL = driver.getCurrentUrl();
@@ -59,7 +59,7 @@ public class ArticlePageTest {
             WebElement articleLink = articles.get(0);
             String articleTitle = "";
             try {
-                WebElement titleElement = articleLink.findElement(By.xpath(".//h2 | .//h3 | .//a[contains(@class, 'title')]"));
+                WebElement titleElement = articleLink.findElement(By.className("ee-post__title__heading"));
                 articleTitle = titleElement.getText();
                 System.out.println("T-3.1.3. Clicking article: " + articleTitle);
             } catch (Exception e) {
@@ -87,7 +87,7 @@ public class ArticlePageTest {
     public void testArticlePageElements() {
         try {
             // Navegar al artículo
-            java.util.List<WebElement> articles = driver.findElements(By.cssSelector("article, .post, .entry, a[href*='/articulo'], a[href*='/news']"));
+            java.util.List<WebElement> articles = driver.findElements(By.cssSelector(".ee-post__media__content"));
             if (articles.size() > 0) {
                 articles.get(0).click();
                 wait.until(ExpectedConditions.urlMatches(".*"));
@@ -96,7 +96,7 @@ public class ArticlePageTest {
             
             // Verificar que el título existe
             try {
-                WebElement articleTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1 | //h2[1] | //article//h1")));
+                WebElement articleTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("elementor-heading-title elementor-size-default")));
                 Assert.assertTrue("T-3.2.1. Article title should be displayed", articleTitle.isDisplayed());
                 String titleText = articleTitle.getText();
                 Assert.assertFalse("T-3.2.2. Article title should not be empty", titleText.trim().isEmpty());
@@ -107,7 +107,7 @@ public class ArticlePageTest {
             
             // Verificar que el contenido existe
             try {
-                WebElement articleContent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//article//div[contains(@class, 'content')] | //article//div[contains(@class, 'post-content')] | //article//p | //div[contains(@class, 'entry-content')]")));
+                WebElement articleContent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("elementor-widget-container")));
                 Assert.assertTrue("T-3.2.4. Article content should be displayed", articleContent.isDisplayed());
                 System.out.println("T-3.2.5. Article content is visible");
             } catch (Exception e) {
@@ -116,7 +116,7 @@ public class ArticlePageTest {
             
             // Verificar que la fecha existe
             try {
-                WebElement publicationDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//time | //span[contains(@class, 'date')] | //span[contains(@class, 'published')] | //*[contains(@class, 'post-date')]")));
+                WebElement publicationDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@class='elementor-heading-title elementor-size-default'][contains(text(), ',') and contains(text(), '202')]")));
                 Assert.assertTrue("T-3.2.6. Publication date should be displayed", publicationDate.isDisplayed());
                 String dateText = publicationDate.getText();
                 Assert.assertFalse("T-3.2.7. Publication date should not be empty", dateText.trim().isEmpty());
