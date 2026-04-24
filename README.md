@@ -60,15 +60,54 @@ mvn test -Dtest=LoginTest
 mvn test -Dtest=LoginTest#testLoginSuccess
 ```
 
+## Tests Disponibles
+
+### HomePageTest (Test Case 1 - Página Principal)
+
+Pruebas para verificar la funcionalidad de la página principal del portal.
+
+```bash
+mvn test -Dtest=HomePageTest
+```
+
+**Tests incluidos:**
+- `testLoginPageTitle` - Verifica que la página principal cargue correctamente con el título esperado.
+- `testHomePageElementsPresent` - Verifica que el encabezado, pie de página y barra de búsqueda estén presentes.
+- `testMainNewsListVisible` - Verifica que la lista de noticias principales sea visible y contenga títulos de artículos.
+
+**Selectores utilizados:**
+- Input de búsqueda: `#elementor-search-form-6ef7d4d5`
+- Botón de búsqueda: `.elementor-search-form__submit`
+- Mensaje sin resultados: `.ee-posts__nothing-found`
+
+### SearchTest (Test Case 2 - Búsqueda de Noticias)
+
+Pruebas para la funcionalidad de búsqueda de noticias.
+
+```bash
+mvn test -Dtest=SearchTest
+```
+
+**Tests incluidos:**
+- `testSearchWithResults` - Busca "rock" y verifica que los resultados contengan la palabra clave.
+- `testSearchNoResults` - Busca "D4V1D" y verifica el mensaje de "No se encontraron resultados".
+
+**Palabras clave de prueba:**
+- Con resultados: "rock"
+- Sin resultados: "D4V1D"
+
 ## Estructura del Proyecto
 
 ```
 TestSelenium/
 ├── pom.xml                           # Configuración de Maven y dependencias
+├── README.md                         # Documentación del proyecto
 ├── src/
 │   └── test/
 │       └── java/
-│           └── LoginTest.java        # Tests de Selenium
+│           ├── LoginTest.java        # Tests de login (original)
+│           ├── HomePageTest.java     # Tests de página principal
+│           └── SearchTest.java       # Tests de búsqueda
 └── target/                           # Archivos compilados y reportes
     └── surefire-reports/             # Reportes de ejecución
 ```

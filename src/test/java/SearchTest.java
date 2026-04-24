@@ -56,9 +56,9 @@ public class SearchTest {
             WebElement searchInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("elementor-search-form-6ef7d4d5")));
             // Ingresar palabra clave (ej. "rock" para resultados)
             searchInput.sendKeys("rock");
-            // Enviar la búsqueda (encontrar el form y submit)
-            WebElement searchForm = driver.findElement(By.cssSelector("form")); // Asumiendo que hay un form alrededor
-            searchForm.submit();
+            // Enviar la búsqueda (hacer clic en el botón de búsqueda)
+            WebElement searchButton = driver.findElement(By.cssSelector(".elementor-search-form__submit"));
+            searchButton.click();
             System.out.println("T-2.1.1. Búsqueda realizada con keyword 'rock'");
 
             // Esperar que la página de resultados cargue (verificar URL o elementos)
@@ -93,11 +93,11 @@ public class SearchTest {
         try {
             // Encontrar la barra de búsqueda
             WebElement searchInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("elementor-search-form-6ef7d4d5")));
-            // Ingresar palabra clave sin resultados (ej. "D4V1D")
+            // Ingresar palabra clave sin resultados ("D4V1D")
             searchInput.sendKeys("D4V1D");
-            // Enviar la búsqueda (encontrar el form y submit)
-            WebElement searchForm = driver.findElement(By.cssSelector("form")); // Asumiendo que hay un form alrededor
-            searchForm.submit();
+            // Enviar la búsqueda (hacer clic en el botón de búsqueda)
+            WebElement searchButton = driver.findElement(By.cssSelector(".elementor-search-form__submit"));
+            searchButton.click();
             System.out.println("T-2.2.1. Búsqueda realizada con keyword 'D4V1D'");
 
             // Esperar que la página cargue
