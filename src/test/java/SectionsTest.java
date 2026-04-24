@@ -48,8 +48,8 @@ public class SectionsTest {
     @Test
     public void testSectionNavigation() {
         try {
-            // Find navigation menu sections
-            java.util.List<WebElement> sections = driver.findElements(By.xpath("//nav//a | //header//a[contains(@href, '/')] | //div[contains(@class, 'menu')]//a"));
+            // Encontrar secciones del menú de navegación
+            java.util.List<WebElement> sections = driver.findElements(By.xpath("//li[contains(@class, 'menu-item-object-category')]//a[@class='elementor-item']"));
             Assert.assertTrue("T-4.1.1. Should have at least one section link", sections.size() > 0);
             System.out.println("T-4.1.2. Found " + sections.size() + " section links");
 
@@ -90,50 +90,57 @@ public class SectionsTest {
     @Test
     public void testSectionArticlesList() {
         try {
-            // Encuentra y haz click en una selección
-            java.util.List<WebElement> sections = driver.findElements(By.xpath("//nav//a | //header//a[contains(@href, '/')] | //div[contains(@class, 'menu')]//a"));
+            // Encuentra y haz click en una sección usando el menú de categorías
+            java.util.List<WebElement> sections = driver.findElements(By.xpath("//li[contains(@class, 'menu-item-object-category')]//a[@class='elementor-item']"));
+            Assert.assertTrue("T-4.2.1. Should have at least one section link", sections.size() > 0);
 
             WebElement sectionLink = null;
             String sectionName = "";
             for (WebElement section : sections) {
                 String href = section.getAttribute("href");
                 String text = section.getText();
-                if (href != null && !href.isEmpty() && !text.trim().isEmpty() && !href.equals(URL) && !text.equals("Home")) {
+                if (href != null && !href.isEmpty() && !text.trim().isEmpty() && !href.equals(URL)) {
                     sectionLink = section;
                     sectionName = text;
                     break;
                 }
             }
 
-            if (sectionLink != null) {
-                sectionLink.click();
-                wait.until(ExpectedConditions.urlMatches(".*"));
-                Thread.sleep(2000);
-                System.out.println("T-4.2.1. Navigated to section: " + sectionName);
-            }
+            Assert.assertNotNull("T-4.2.2. Should find a valid section link", sectionLink);
+            System.out.println("T-4.2.3. Clicking section: " + sectionName);
+            sectionLink.click();
+            wait.until(ExpectedConditions.urlMatches(".*"));
+            Thread.sleep(2000);
+            System.out.println("T-4.2.4. Navigated to section: " + sectionName);
 
-            // Verifica que artículos aparezcan en la sección
-            try {
-                java.util.List<WebElement> articles = driver.findElements(By.cssSelector("article, .post, .entry, .article-item"));
-                Assert.assertTrue("T-4.2.2. Section should display at least one article", articles.size() > 0);
-                System.out.println("T-4.2.3. Section contains " + articles.size() + " articles");
+            // Verifica que estemos en una página de categoría
+            WebElement body = driver.findElement(By.tagName("body"));
+            String bodyClass = body.getAttribute("class");
+            Assert.assertTrue("T-4.2.5. Should be on category page", bodyClass.contains("category"));
+            System.out.println("T-4.2.6. Confirmed on category page");
 
-                // Verifica que los títulos de los artículos existan
-                for (int i = 0; i < Math.min(3, articles.size()); i++) {
-                    WebElement article = articles.get(i);
-                    try {
-                        WebElement title = article.findElement(By.xpath(".//h2 | .//h3 | .//a[contains(@class, 'title')] | .//h1"));
-                        Assert.assertTrue("T-4.2.4. Article " + (i + 1) + " title should be displayed", title.isDisplayed());
-                        String titleText = title.getText();
-                        System.out.println("T-4.2.5. Article " + (i + 1) + " title: " + titleText);
-                        Assert.assertFalse("T-4.2.6. Article " + (i + 1) + " title should not be empty", titleText.trim().isEmpty());
-                    } catch (Exception e) {
-                        System.out.println("T-4.2.4. FAIL: Title for article " + (i + 1) + " not found: " + e.getMessage());
-                    }
+            // Verifica que el widget de posts exista
+            WebElement postsWidget = driver.findElement(By.cssSelector("div.elementor-widget-posts-extra"));
+            Assert.assertNotNull("T-4.2.7. Posts widget should exist", postsWidget);
+            System.out.println("T-4.2.8. Posts widget found");
+
+            // Verifica que haya artículos dentro del widget de posts
+            java.util.List<WebElement> articles = driver.findElements(By.cssSelector("div.elementor-widget-posts-extra article"));
+            Assert.assertTrue("T-4.2.9. Section should display at least one article", articles.size() > 0);
+            System.out.println("T-4.2.10. Section contains " + articles.size() + " articles");
+
+            // Verifica que los títulos de los artículos existan
+            for (int i = 0; i < Math.min(3, articles.size()); i++) {
+                WebElement article = articles.get(i);
+                try {
+                    WebElement title = article.findElement(By.xpath(".//h2 | .//h3 | .//a[contains(@class, 'title')] | .//h1"));
+                    Assert.assertTrue("T-4.2.11. Article " + (i + 1) + " title should be displayed", title.isDisplayed());
+                    String titleText = title.getText();
+                    System.out.println("T-4.2.12. Article " + (i + 1) + " title: " + titleText);
+                    Assert.assertFalse("T-4.2.13. Article " + (i + 1) + " title should not be empty", titleText.trim().isEmpty());
+                } catch (Exception e) {
+                    System.out.println("T-4.2.11. WARNING: Title for article " + (i + 1) + " not found: " + e.getMessage());
                 }
-
-            } catch (Exception e) {
-                System.out.println("T-4.2.2. FAIL: Articles not found in section: " + e.getMessage());
             }
 
         } catch (Exception e) {
