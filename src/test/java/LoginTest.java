@@ -1,5 +1,5 @@
 /*
-Este es un archivo de ejemplo para basar el desarrollo
+Este es un archivo de ejemplo para basar el desarrollo no forma parte del trabajo entregable. Ignorar.
 */
 
 import org.junit.After;
