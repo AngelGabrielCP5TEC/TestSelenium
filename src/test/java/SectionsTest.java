@@ -19,6 +19,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.JavascriptExecutor;
 import org.junit.Assert;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
@@ -133,16 +134,9 @@ public class SectionsTest {
             for (int i = 0; i < Math.min(3, articles.size()); i++) {
                 WebElement article = articles.get(i);
                 try {
-                    // Try to find title with non-empty text
-                    java.util.List<WebElement> titleElements = article.findElements(By.xpath(".//h2 | .//h3 | .//a[contains(@class, 'title')] | .//h1"));
-                    String titleText = "";
-                    for (WebElement titleElem : titleElements) {
-                        String text = titleElem.getText();
-                        if (!text.trim().isEmpty()) {
-                            titleText = text;
-                            break;
-                        }
-                    }
+                    // Encuentra el título del artículo usando su nombre de clase
+                    WebElement titleElement = article.findElement(By.className("ee-post__title__heading"));
+                    String titleText = titleElement.getText();
                     if (!titleText.trim().isEmpty()) {
                         System.out.println("T-4.2.11. Article " + (i + 1) + " title: " + titleText);
                     } else {

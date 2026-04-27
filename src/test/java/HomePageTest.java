@@ -20,6 +20,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.JavascriptExecutor;
 import org.junit.Assert;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
@@ -110,15 +111,20 @@ public class HomePageTest {
         
         for (int i = 0; i < 3 && i < articles.size(); i++) {
             WebElement article = articles.get(i);
+            // Hacer scroll en la página para asegurarse de que el artículo esté visible
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", article);
             try {
-                WebElement title = article.findElement(By.xpath(".//h2 | .//h3 | .//a[contains(@class, 'title')] | .//h1"));
-                Assert.assertTrue("T-1.3.3.1. Article " + (i+1) + " title should be displayed", title.isDisplayed());
-                String titleText = title.getText();
-                System.out.println("T-1.3.3.2. Article " + (i+1) + " title: " + titleText);
-                Assert.assertFalse("T-1.3.3.3. Article " + (i+1) + " title should not be empty", titleText.trim().isEmpty());
-            } catch (Exception e) {
-                System.out.println("T-1.3.3. FAIL: Title for article " + (i+1) + " not found: " + e.getMessage());
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
+            
+            // Encuentra el título del artículo usando su nombre de clase
+            WebElement title = article.findElement(By.className("ee-post__title__heading"));
+            Assert.assertTrue("T-1.3.3.1. Article " + (i+1) + " title should be displayed", title.isDisplayed());
+            String titleText = title.getText();
+            System.out.println("T-1.3.3.2. Article " + (i+1) + " title: " + titleText);
+            Assert.assertFalse("T-1.3.3.3. Article " + (i+1) + " title should not be empty", titleText.trim().isEmpty());
         }
     }
 }

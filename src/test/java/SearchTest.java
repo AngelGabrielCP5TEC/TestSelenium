@@ -21,6 +21,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.JavascriptExecutor;
 import org.junit.Assert;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
@@ -70,7 +71,12 @@ public class SearchTest {
             boolean hasResults = false;
             for (WebElement article : resultArticles) {
                 try {
-                    WebElement title = article.findElement(By.xpath(".//h2 | .//h3 | .//a[contains(@class, 'title')] | .//h1"));
+                    // Hacer scroll en la página para asegurarse de que el artículo esté visible
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", article);
+                    Thread.sleep(500);
+                    
+                    // Encuentra el título del artículo usando su nombre de clase
+                    WebElement title = article.findElement(By.className("ee-post__title__heading"));
                     String titleText = title.getText().toLowerCase();
                     if (titleText.contains("rock")) {
                         hasResults = true;
