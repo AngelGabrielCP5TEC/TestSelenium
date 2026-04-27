@@ -20,6 +20,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.JavascriptExecutor;
 import org.junit.Assert;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
@@ -66,7 +67,8 @@ public class ArticlePageTest {
                 System.out.println("T-3.1.3. Could not retrieve article title, proceeding with click");
             }
             
-            articleLink.click();
+            // Quitar overlay con JavaScript (un pop-up bloquea el contenido de la página principal)
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", articleLink);
             
             // Esperar a que la página cargue y la URL cambie
             wait.until(ExpectedConditions.urlMatches(".*"));
@@ -89,14 +91,15 @@ public class ArticlePageTest {
             // Navegar al artículo
             java.util.List<WebElement> articles = driver.findElements(By.cssSelector(".ee-post__media__content"));
             if (articles.size() > 0) {
-                articles.get(0).click();
+                // Quitar overlay con JavaScript (un pop-up bloquea el contenido de la página principal)
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", articles.get(0));
                 wait.until(ExpectedConditions.urlMatches(".*"));
                 Thread.sleep(2000);
             }
             
             // Verificar que el título existe
             try {
-                WebElement articleTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("elementor-heading-title elementor-size-default")));
+                WebElement articleTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".elementor-heading-title.elementor-size-default")));
                 Assert.assertTrue("T-3.2.1. Article title should be displayed", articleTitle.isDisplayed());
                 String titleText = articleTitle.getText();
                 Assert.assertFalse("T-3.2.2. Article title should not be empty", titleText.trim().isEmpty());
