@@ -131,14 +131,25 @@ public class SectionsTest {
             System.out.println("T-4.2.10. Section contains " + articles.size() + " articles");
 
             // Verifica que los títulos de los artículos existan
-            for (int i = 0; i < Math.min(3, articles.size()); i++) {
+            for (int i = 0; i < Math.min(5, articles.size()); i++) {
                 WebElement article = articles.get(i);
                 try {
-                    // Encuentra el título del artículo usando su nombre de clase
+                    // Hacer scroll en la página para asegurarse de que el artículo esté visible (para evitar problemas con lazy loading o pop-ups)
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", article);
+                    
+                    // Da un pequeño tiempo para que el artículo se cargue completamente después de hacer scroll
+                    Thread.sleep(500);
+
                     WebElement titleElement = article.findElement(By.className("ee-post__title__heading"));
+                    
+                    // Fallback a textContent en caso de que getText() retorne vacío
                     String titleText = titleElement.getText();
+                    if (titleText.trim().isEmpty()) {
+                        titleText = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].textContent;", titleElement);
+                    }
+
                     if (!titleText.trim().isEmpty()) {
-                        System.out.println("T-4.2.11. Article " + (i + 1) + " title: " + titleText);
+                        System.out.println("T-4.2.11. Article " + (i + 1) + " title: " + titleText.trim());
                     } else {
                         System.out.println("T-4.2.11. WARNING: Article " + (i + 1) + " has no title text found");
                     }
