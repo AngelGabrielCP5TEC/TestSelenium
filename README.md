@@ -84,6 +84,7 @@ mvn test -Dtest=HomePageTest
 - Header: `.attachment-full.size-full.wp-image-25066`
 - Footer: `footer`
 - Artículos: `article, .post, .entry`
+- Títulos de artículos: `.ee-post__title__heading` (con scrollIntoView y espera de texto no vacío)
 
 **URL probada:** `https://es.rollingstone.com/`
 
@@ -109,6 +110,7 @@ mvn test -Dtest=SearchTest
 - Input de búsqueda: `#elementor-search-form-6ef7d4d5`
 - Botón de búsqueda: `.elementor-search-form__submit`
 - Mensaje sin resultados: `.ee-posts__nothing-found`
+- Títulos de artículos: `.ee-post__title__heading` (con scrollIntoView)
 
 **URL probada:** `https://es.rollingstone.com/`
 
@@ -134,10 +136,13 @@ mvn test -Dtest=ArticlePageTest
 
 **Selectores utilizados:**
 - Artículos: `.ee-post__media__content`
-- Título del artículo: `.ee-post__title__heading`
-- Encabezado de artículo: `.elementor-heading-title.elementor-size-default`
+- Título del artículo: `.elementor-heading-title.elementor-size-default` (CSS selector para evitar compound class names)
 - Contenedor de artículo: `.elementor-widget-container`
 - Fecha de publicación: XPath `//h2[@class='elementor-heading-title elementor-size-default'][contains(text(), ',') and contains(text(), '202')]`
+
+**Mejoras implementadas:**
+- Uso de JavaScript click para bypasear overlays de popups
+- Manejo explícito de esperas para cambios de URL
 
 **URL probada:** `https://es.rollingstone.com/`
 
@@ -166,8 +171,13 @@ mvn test -Dtest=SectionsTest
 - Enlaces de secciones: `li[contains(@class, 'menu-item-object-category')] a[@class='elementor-item']` (XPath)
 - Widget de posts: `div.elementor-widget-posts-extra`
 - Artículos en sección: `div.elementor-widget-posts-extra article`
-- Títulos de artículos: `h2`, `h3`, `a[contains(@class, 'title')]`, `h1`
+- Títulos de artículos: `.ee-post__title__heading` (con scrollIntoView y espera de texto no vacío)
 - Body (verificación de página de categoría): `body` (atributo class)
+
+**Mejoras implementadas:**
+- `scrollIntoView()` para evitar overlays de popups
+- Espera explícita para asegurar que el texto del título está poblado antes de acceder
+- Selectores específicos en lugar de genéricos para mayor confiabilidad
 
 **URL probada:** `https://es.rollingstone.com/`
 
